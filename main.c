@@ -21,7 +21,13 @@ shave()
 {
   while(true)
   {
-
+    sem_wait(&client_queue);
+    sem_wait(&barbershop_seats);
+    seats++;
+    sem_signal(&barber1);
+    sem_signal(&barbershop_seats);
+    
+    printf("Barber number 1 is shaving a customer's beard\n");
   }
 }
 
@@ -30,7 +36,13 @@ paint()
 {
   while(true)
   {
-
+    sem_wait(&client_queue);
+    sem_wait(&barbershop_seats);
+    seats++;
+    sem_signal(&barber1);
+    sem_signal(&barbershop_seats);
+    
+    printf("Barber number 2 is painting a customer's hair\n");
   }
 }
 
@@ -39,7 +51,13 @@ haircut()
 {
   while(true)
   {
-
+    sem_wait(&client_queue);
+    sem_wait(&barbershop_seats);
+    seats++;
+    sem_signal(&barber1);
+    sem_signal(&barbershop_seats);
+    
+    printf("Barber number 3 is cutting a customer's hair\n");
   }
 }
 
@@ -127,8 +145,6 @@ main(int argc, char** argv)
 
     pthread_create(&clients[i], NULL, &client, task);
   }
-
-
 
   return 0;
 }
