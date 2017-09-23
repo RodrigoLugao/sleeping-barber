@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <pthread.h>
 #include <semaphore.h>
 #include <string.h>
@@ -17,7 +18,7 @@ sem_t barber3_ready;    // Mutex that tells when barber 3 is ready to serve the 
 
 int seats = 10;         // Amount of seats in the barbershop
 
-void
+void*
 shave()
 {
   while(1)
@@ -32,7 +33,7 @@ shave()
   }
 }
 
-void
+void*
 paint()
 {
   while(1)
@@ -47,7 +48,7 @@ paint()
   }
 }
 
-void
+void*
 haircut()
 {
   while(1)
@@ -62,7 +63,7 @@ haircut()
   }
 }
 
-void
+void*
 client(char task, int id)
 {
   sem_t* barber;
@@ -144,7 +145,7 @@ main(int argc, char** argv)
       exit(1);
     }
 
-    pthread_create(&clients[i], NULL, &client, task);
+    pthread_create(&clients[i], NULL, &client, &task);
   }
 
   return 0;
