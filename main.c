@@ -26,8 +26,8 @@ shave()
     sem_wait(&client_queue);
     sem_wait(&barbershop_seats);
     seats++;
-    sem_signal(&barber1);
-    sem_signal(&barbershop_seats);
+    sem_post(&barber1);
+    sem_post(&barbershop_seats);
     
     printf("Barber number 1 is shaving a customer's beard\n");
   }
@@ -41,8 +41,8 @@ paint()
     sem_wait(&client_queue);
     sem_wait(&barbershop_seats);
     seats++;
-    sem_signal(&barber1);
-    sem_signal(&barbershop_seats);
+    sem_post(&barber1);
+    sem_post(&barbershop_seats);
     
     printf("Barber number 2 is painting a customer's hair\n");
   }
@@ -56,8 +56,8 @@ haircut()
     sem_wait(&client_queue);
     sem_wait(&barbershop_seats);
     seats++;
-    sem_signal(&barber1);
-    sem_signal(&barbershop_seats);
+    sem_post(&barber1);
+    sem_post(&barbershop_seats);
     
     printf("Barber number 3 is cutting a customer's hair\n");
   }
@@ -91,8 +91,8 @@ client(char task, int id)
   if(seats > 0)
   {
     seats--;
-    sem_signal(&client_queue);
-    sem_signal(&barbershop_seats);
+    sem_post(&client_queue);
+    sem_post(&barbershop_seats);
     sem_wait(barber);
     printf(message, id);
   }
