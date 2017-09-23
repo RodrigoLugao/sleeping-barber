@@ -24,6 +24,7 @@ shave()
   while(1)
   {
     sem_wait(&client_queue);
+    printf("%d", client_queue);
     sem_wait(&barbershop_seats);
     seats++;
     sem_post(&barber1_ready);
@@ -31,6 +32,8 @@ shave()
     
     printf("Barber number 1 is shaving a customer's beard\n");
   }
+
+  return NULL;
 }
 
 void*
@@ -39,6 +42,7 @@ paint()
   while(1)
   {
     sem_wait(&client_queue);
+    printf("%d", client_queue);
     sem_wait(&barbershop_seats);
     seats++;
     sem_post(&barber2_ready);
@@ -56,6 +60,7 @@ haircut()
   while(1)
   {
     sem_wait(&client_queue);
+    printf("%d", client_queue);
     sem_wait(&barbershop_seats);
     seats++;
     sem_post(&barber3_ready);
@@ -120,7 +125,6 @@ main(int argc, char** argv)
   sem_init(&barber2_ready, 0, 0);
   sem_init(&barber3_ready, 0, 0);
 
-
   pthread_create(&barber1, NULL, &shave, NULL);
   pthread_create(&barber2, NULL, &paint, NULL);
   pthread_create(&barber3, NULL, &haircut, NULL);
@@ -133,6 +137,8 @@ main(int argc, char** argv)
 
   char* clients_arg;
   clients_arg = argv[1];
+
+  printf("Client string %s\n", clients_arg);
 
   int client_num = strlen(clients_arg);
 
