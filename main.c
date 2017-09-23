@@ -46,6 +46,8 @@ paint()
     
     printf("Barber number 2 is painting a customer's hair\n");
   }
+
+  return NULL;
 }
 
 void*
@@ -61,14 +63,16 @@ haircut()
     
     printf("Barber number 3 is cutting a customer's hair\n");
   }
+
+  return NULL;
 }
 
 void*
-client(char task, int id)
+client(void* task)
 {
   sem_t* barber;
   char* message;
-  switch(task)
+  switch(*(char*)task)
   {
     case 's':
       barber = &barber1_ready;
@@ -94,13 +98,15 @@ client(char task, int id)
     sem_post(&client_queue);
     sem_post(&barbershop_seats);
     sem_wait(barber);
-    printf(message, id);
+    printf(message, 1);
   }
   else
   {
     sem_post(&barbershop_seats);
-    printf("Client number %d left due to no available seats\n", id);
+    printf("Client number %d left due to no available seats\n", 1);
   }
+
+  return NULL;
 }
 
 int
