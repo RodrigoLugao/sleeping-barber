@@ -79,6 +79,8 @@ haircut()
 void*
 client(void* new_client)
 {
+  sem_wait(&barbershop_seats);
+  
   struct client_struct *this_client = new_client;
   char task = this_client->task;
   int id = this_client->id;
@@ -102,9 +104,7 @@ client(void* new_client)
       message = "Client number %d is having a haircut\n";
       break;
   }
- 
-  sem_wait(&barbershop_seats);
-  
+
   if(seats > 0)
   {
     seats--;
