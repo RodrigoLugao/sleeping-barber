@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <pthread.h>
 #include <semaphore.h>
+#include <string.h>
 
 pthread_t barber1;      // This barber shaves the client's beard
 pthread_t barber2;      // This barber paints the client's hair
