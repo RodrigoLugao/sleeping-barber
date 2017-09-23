@@ -19,7 +19,7 @@ int seats = 10;         // Amount of seats in the barbershop
 void
 shave()
 {
-  while(true)
+  while(1)
   {
     sem_wait(&client_queue);
     sem_wait(&barbershop_seats);
@@ -34,7 +34,7 @@ shave()
 void
 paint()
 {
-  while(true)
+  while(1)
   {
     sem_wait(&client_queue);
     sem_wait(&barbershop_seats);
@@ -49,7 +49,7 @@ paint()
 void
 haircut()
 {
-  while(true)
+  while(1)
   {
     sem_wait(&client_queue);
     sem_wait(&barbershop_seats);
