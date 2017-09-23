@@ -48,7 +48,7 @@ paint()
     sem_wait(&client_queue);
     sem_wait(&barbershop_seats);
     seats++;
-    printf("Barber number 1 is shaving a customer's beard\n");
+    printf("Barber number 2 is shaving a customer's beard\n");
 
     sem_post(&barber2_ready);
     sem_post(&barbershop_seats);
@@ -66,7 +66,7 @@ haircut()
     sem_wait(&client_queue);
     sem_wait(&barbershop_seats);
     seats++;
-    printf("Barber number 1 is shaving a customer's beard\n");
+    printf("Barber number 3 is shaving a customer's beard\n");
 
     sem_post(&barber3_ready);
     sem_post(&barbershop_seats);
