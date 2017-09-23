@@ -46,37 +46,40 @@ haircut()
 void
 client(char task, int id)
 {
-  sem_t* sem;
+  sem_t* barber;
   char* message;
   switch(task)
   {
     case 's':
-      sem = &barber1_ready;
+      barber = &barber1_ready;
       message = "Client number %d is having his beard shaved\n";
       break;
 
     case 'p':
-      sem = &barber2_ready;
+      barber = &barber2_ready;
       message = "Client number %d is having his hair painted\n";
       break;
 
     case 'h':
-      sem = &barber3_ready;
+      barber = &barber3_ready;
       message = "Client number %d is having a haircut\n";
       break;
   }
  
-  sem_signal(&client_queue);
+  sem_wait(&barbershop_seats);
   
   if(seats > 0)
   {
     seats--;
-    sem_wait(sem);
-    
+    sem_signal(&client_queue);
+    sem_signal(&barbershop_seats);
+    sem_wait(barber);
+    printf(message, id);
   }
   else
   {
     printf("Client number %d left due to no available seats\n", id);
+    sem_signal(&barbershop_seats);
   }
 }
 
