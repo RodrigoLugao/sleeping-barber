@@ -26,10 +26,11 @@ shave()
     sem_wait(&client_queue);
     sem_wait(&barbershop_seats);
     seats++;
+    printf("Barber number 1 is shaving a customer's beard\n");
+
     sem_post(&barber1_ready);
     sem_post(&barbershop_seats);
-    
-    printf("Barber number 1 is shaving a customer's beard\n");
+       
   }
 }
 
@@ -41,10 +42,11 @@ paint()
     sem_wait(&client_queue);
     sem_wait(&barbershop_seats);
     seats++;
+    printf("Barber number 1 is shaving a customer's beard\n");
+
     sem_post(&barber2_ready);
     sem_post(&barbershop_seats);
     
-    printf("Barber number 2 is painting a customer's hair\n");
   }
 
   return NULL;
@@ -58,10 +60,11 @@ haircut()
     sem_wait(&client_queue);
     sem_wait(&barbershop_seats);
     seats++;
+    printf("Barber number 1 is shaving a customer's beard\n");
+
     sem_post(&barber3_ready);
     sem_post(&barbershop_seats);
     
-    printf("Barber number 3 is cutting a customer's hair\n");
   }
 
   return NULL;
