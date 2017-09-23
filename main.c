@@ -29,7 +29,6 @@ shave()
   while(1)
   {
     sem_wait(&client_queue);
-    printf("%d", client_queue);
     sem_wait(&barbershop_seats);
     seats++;
     printf("Barber number 1 is shaving a customer's beard\n");
@@ -47,7 +46,6 @@ paint()
   while(1)
   {
     sem_wait(&client_queue);
-    printf("%d", client_queue);
     sem_wait(&barbershop_seats);
     seats++;
     printf("Barber number 1 is shaving a customer's beard\n");
@@ -66,7 +64,6 @@ haircut()
   while(1)
   {
     sem_wait(&client_queue);
-    printf("%d", client_queue);
     sem_wait(&barbershop_seats);
     seats++;
     printf("Barber number 1 is shaving a customer's beard\n");
