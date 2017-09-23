@@ -77,7 +77,7 @@ haircut()
 void*
 client(void* new_client)
 {
-  struct *client_struct this_client = new_client;
+  struct client_struct *this_client = new_client;
   char task = this_client->task;
   int id = this_client->id;
 
