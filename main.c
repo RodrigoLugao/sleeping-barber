@@ -96,8 +96,8 @@ client(char task, int id)
   }
   else
   {
-    printf("Client number %d left due to no available seats\n", id);
     sem_signal(&barbershop_seats);
+    printf("Client number %d left due to no available seats\n", id);
   }
 }
 
