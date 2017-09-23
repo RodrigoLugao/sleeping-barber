@@ -98,7 +98,7 @@ client(char task, int id)
   }
   else
   {
-    sem_signal(&barbershop_seats);
+    sem_post(&barbershop_seats);
     printf("Client number %d left due to no available seats\n", id);
   }
 }
