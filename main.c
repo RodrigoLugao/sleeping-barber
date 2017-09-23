@@ -4,6 +4,11 @@
 #include <semaphore.h>
 #include <string.h>
 
+struct client_struct {
+  char task;
+  int id;
+};
+
 pthread_t barber1;      // This barber shaves the client's beard
 pthread_t barber2;      // This barber paints the client's hair
 pthread_t barber3;      // This barber cuts the client's hair
@@ -27,10 +32,10 @@ shave()
     printf("%d", client_queue);
     sem_wait(&barbershop_seats);
     seats++;
-    sem_post(&barber1_ready);
-    sem_post(&barbershop_seats);
-    
     printf("Barber number 1 is shaving a customer's beard\n");
+
+    sem_post(&barber1_ready);
+    sem_post(&barbershop_seats); 
   }
 
   return NULL;
@@ -45,10 +50,11 @@ paint()
     printf("%d", client_queue);
     sem_wait(&barbershop_seats);
     seats++;
+    printf("Barber number 1 is shaving a customer's beard\n");
+
     sem_post(&barber2_ready);
     sem_post(&barbershop_seats);
     
-    printf("Barber number 2 is painting a customer's hair\n");
   }
 
   return NULL;
@@ -63,21 +69,26 @@ haircut()
     printf("%d", client_queue);
     sem_wait(&barbershop_seats);
     seats++;
+    printf("Barber number 1 is shaving a customer's beard\n");
+
     sem_post(&barber3_ready);
     sem_post(&barbershop_seats);
     
-    printf("Barber number 3 is cutting a customer's hair\n");
   }
 
   return NULL;
 }
 
 void*
-client(void* task)
+client(void* new_client)
 {
+  struct client_struct *this_client = new_client;
+  char task = this_client->task;
+  int id = this_client->id;
+
   sem_t* barber;
   char* message;
-  switch(*(char*)task)
+  switch(task)
   {
     case 's':
       barber = &barber1_ready;
@@ -103,12 +114,12 @@ client(void* task)
     sem_post(&client_queue);
     sem_post(&barbershop_seats);
     sem_wait(barber);
-    printf(message, 1);
+    printf(message, id);
   }
   else
   {
     sem_post(&barbershop_seats);
-    printf("Client number %d left due to no available seats\n", 1);
+    printf("Client number %d left due to no available seats\n", id);
   }
 
   return NULL;
@@ -157,7 +168,11 @@ main(int argc, char** argv)
       exit(1);
     }
 
-    pthread_create(&clients[i], NULL, &client, &task);
+    struct client_struct next_client;
+    next_client.task = task;
+    next_client.id = i;
+
+    pthread_create(&clients[i], NULL, &client, (void*) &next_client);
   }
 
   return 0;
