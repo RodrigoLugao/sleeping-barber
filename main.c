@@ -20,9 +20,8 @@ sem_t barbershop_seats; // Grants access to update the 'seats' variable
 sem_t barber1_ready;    // Mutex that tells when barber 1 is ready to serve the clients
 sem_t barber2_ready;    // Mutex that tells when barber 2 is ready to serve the clients
 sem_t barber3_ready;    // Mutex that tells when barber 3 is ready to serve the clients
-sem_t cust1_ready;    // Mutex that tells when customer 1 is ready to serve the clients
-sem_t cust2_ready;    // Mutex that tells when customer 2 is ready to serve the clients
-sem_t cust3_ready;    // Mutex that tells when customer 3 is ready to serve the clients
+sem_t cust_ready;    // Mutex that tells when customer 1 is ready to serve the clients
+
 sem_t printador;
 
 int seats = 10;         // Amount of seats in the barbershop
@@ -33,7 +32,7 @@ shave()
 {
   while(1)
   {
-	sem_wait(&cust1_ready);
+	sem_wait(&cust_ready);
     sem_wait(&barbershop_seats);
     seats++;
 	sem_wait(&printador);
@@ -52,7 +51,7 @@ paint()
 {
   while(1)
   {
-    sem_wait(&cust2_ready);
+    sem_wait(&cust_ready);
     sem_wait(&barbershop_seats);
     seats++;
 	sem_wait(&printador);
@@ -72,7 +71,7 @@ haircut()
 {
   while(1)
   {
-    sem_wait(&cust3_ready);
+    sem_wait(&cust_ready);
     sem_wait(&barbershop_seats);
     seats++;
 	sem_wait(&printador);
@@ -103,7 +102,7 @@ client(void* new_client)
     case 's':
       message = "Client number %d is having his beard shaved\nIt's super effective!\n";
 	  seats--;
-	  sem_post(&cust1_ready);
+	  sem_post(&cust_ready);
       sem_post(&barbershop_seats);
       sem_wait(&barber1_ready);
 	  sem_wait(&printador);
@@ -114,7 +113,7 @@ client(void* new_client)
     case 'p':
       message = "Client number %d is having his hair painted\nIt's super effective!\n";
 	  seats--;
-	  sem_post(&cust2_ready);
+	  sem_post(&cust_ready);
       sem_post(&barbershop_seats);
       sem_wait(&barber2_ready);
 	  sem_wait(&printador);
@@ -125,7 +124,7 @@ client(void* new_client)
     case 'h':
       message = "Client number %d is having a haircut\nIt's super effective!\n";
 	  seats--;
-	  sem_post(&cust3_ready);
+	  sem_post(&cust_ready);
       sem_post(&barbershop_seats);
       sem_wait(&barber3_ready);
 	  sem_wait(&printador);
@@ -153,9 +152,7 @@ main(int argc, char** argv)
   sem_init(&barbershop_seats, 0, 1);
   sem_init(&printador, 0, 1);
 
-  sem_init(&cust1_ready, 0, 0);
-  sem_init(&cust2_ready, 0, 0);
-  sem_init(&cust3_ready, 0, 0);
+  sem_init(&cust_ready, 0, 0);
 
   sem_init(&barber1_ready, 0, 0);
   sem_init(&barber2_ready, 0, 0);
@@ -166,11 +163,11 @@ main(int argc, char** argv)
   pthread_create(&barber3, NULL, &haircut, NULL);
 
   char* clients_arg;
-  clients_arg = "shhphhpphsh";
+  clients_arg = "shhphhpsh";
   sem_wait(&printador);
   printf("Client string %s\n", clients_arg);
 	sem_post(&printador);
-  int client_num = 11;
+  int client_num = strlen(clients_arg);
 
   pthread_t clients[client_num];
 
@@ -196,12 +193,8 @@ main(int argc, char** argv)
 	printf("A wild CLIENT %d appears!\n", i);
 	sem_post(&printador);
   }
-  for(i = 0; i < client_num; i++){
-	  (void) pthread_join(clients[i], NULL);
-	  sem_wait(&printador);
-	printf("CLIENT %d has fainted!\n", i);
-	sem_post(&printador);
-  }
+  
+
 	printf("Clients atendidos: %d\n", clients_attended);
   return 0;
 }
