@@ -161,12 +161,18 @@ main(int argc, char** argv)
   pthread_create(&barber1, NULL, &shave, NULL);
   pthread_create(&barber2, NULL, &paint, NULL);
   pthread_create(&barber3, NULL, &haircut, NULL);
+  
+    if(argc < 1)
+  {
+    printf("-- Clients string wasn't specified\n");
+    exit(1);
+  }
 
   char* clients_arg;
-  clients_arg = "shhphhpsh";
-  sem_wait(&printador);
+  clients_arg = argv[1];
+
   printf("Client string %s\n", clients_arg);
-	sem_post(&printador);
+
   int client_num = strlen(clients_arg);
 
   pthread_t clients[client_num];
